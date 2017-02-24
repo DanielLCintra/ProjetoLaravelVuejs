@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class ApiController extends Controller
 {
-	$user = User::find($userId);
 
-	$addresses = $user->addresses;
+	public function address($userid){
 
-	return reponse()->json(['addresses' => $addresses], 200);
-	
+		$user = User::find($userid);
+
+		$addresses = $user->addresses;
+
+		sleep(2);
+
+		return response()->json(['addresses' => $addresses], 200);
+
+	}
 }

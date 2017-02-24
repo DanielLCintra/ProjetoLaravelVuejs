@@ -30,15 +30,21 @@
 					this.toggleAll()
 				}else{
 					this.toggleOne(id)
-
-					bus.$emit('get-addresses', { userid: id})
 				}
 			},
 			toggleAll(){
 				if (this.details.length > 0){
 					this.details = []
 				}else{
-					this.details = this.users.map(user => user.id)
+
+					this.details = this.users.map(user => {
+
+						bus.$emit('get-addresses', { userid: user.id})
+
+						return user.id
+					})
+
+
 				}
 			},
 			toggleOne(id){
@@ -47,6 +53,7 @@
 					this.details.splice(index,1)
 				}else{
 					this.details.push(id)
+					bus.$emit('get-addresses', { userid: id})
 				}	
 			},
 			formatDate(date){
@@ -114,11 +121,9 @@
 				</tr>
 				<tr v-show="details.includes(user.id)">
 					<td colspan="5">
-						<div class="row">
-							<div class="col-md-6" v-for="address in user.addresses">
-								<dc-user-addresses :userid="user.id"></dc-user-addresses>
-							</div>
-						</div>
+						
+						<dc-user-addresses :userid="user.id"></dc-user-addresses>
+						
 					</td>
 				</tr>
 			</tbody>	
@@ -127,13 +132,6 @@
 </template>
 
 <style>
-	.address{
-		padding: 10px;
-		background-color: lightsteelblue;
-		border-radius: 6px;
-		border: #999 1px solid; 
-		margin-bottom: 10px;
-	}
 
 	.red {
 		color: red;
